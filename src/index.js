@@ -25,56 +25,39 @@ class Board extends React.Component {
         if (i === this.props.squareNum)
             isSelected = true
 
-            let arr = Array(3).fill(null);
-            return arr.map(square => {
-                return (
+        return (
             <Square
                 value={this.props.squares[i]}
                 onClick={() => this.props.onClick(i)}
                 isSelected={isSelected}
+                key={i}
             />
         )
-    })
     }
 
-    board = () => {
-        let arr = Array(3).fill(null);
-        return arr.map(square => {
-            return (
-                <div className="board-row">
-                    {this.renderSquare(square)}
-                </div>
-            )
-        })
+    buildBoard () {
+        let boardRows = [];
+        let counter = 0;
+        let row = 0;
+        let col = 0;
+        for (row = 0; row < 3; ++row){
+            let boardColumns = [];
+            for (col = 0; col < 3;++col){
+                boardColumns.push(this.renderSquare(counter++)); 
+            }
+            boardRows.push(<div className="board-row" key={row}>{boardColumns}</div>)
+        }
+    return boardRows;        
     }
 
     //Board rendering
     render() {
         console.log('board rendered');  //debug
         return (
-            this.board()
+            this.buildBoard()
         );
     }
 }
-
-// return (
-//     <div>
-//         <div className="board-row">
-//             {this.renderSquare(0)}
-//             {this.renderSquare(1)}
-//             {this.renderSquare(2)}
-//         </div>
-//         <div className="board-row">
-//             {this.renderSquare(3)}
-//             {this.renderSquare(4)}
-//             {this.renderSquare(5)}
-//         </div>
-//         <div className="board-row">
-//             {this.renderSquare(6)}
-//             {this.renderSquare(7)}
-//             {this.renderSquare(8)}
-//         </div>
-//     </div>
 
 
 //Game class. It hosts the State component.
@@ -94,7 +77,7 @@ class Game extends React.Component {
 
     //Function handling user clicks.
     handleClick(i) {
-
+        console.log(i)
         // Get the history state and store in a constant. 
         // If the user clicks in some button to go back to some previous point 
         // in time and then make a new move from that point, 
