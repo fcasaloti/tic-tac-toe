@@ -4,9 +4,10 @@ import './index.css';
 
 //Function that returns each button of the board
 function Square(props) {
+    const fontWeight = props.isSelected ? "bold" : "normal";
     return (
         <button
-            className="square"
+            className="square" style={{fontWeight: `${fontWeight}`}}
             onClick={props.onClick}
         >
             {props.value}
@@ -19,10 +20,16 @@ class Board extends React.Component {
     
     // Call Square function and send Square Location to Game component.    
     renderSquare(i) {
+        //Check if the Square rendered is the one selected
+        let isSelected = false;
+        if (i === this.props.squareNum)
+            isSelected = true
+
         return (
         <Square
             value={this.props.squares[i]}
             onClick={() => this.props.onClick(i)}
+            isSelected={isSelected}
         />
         )
     }
@@ -63,6 +70,7 @@ class Game extends React.Component {
             historyLocation: Array(9).fill(null),           //It stores the position of each move (row, col)
             stepNumber:0,                                   //It indicates the number of current move.
             xIsNext: true,                                  //It helps to control alternating between X and O
+            squareNum: "",                                  //Stores the square number clicked
         };
     }
 
@@ -118,6 +126,7 @@ class Game extends React.Component {
         historyLocation: historyLocation.slice(),
         stepNumber: history.length,
         xIsNext: !this.state.xIsNext,
+        squareNum: i,
     });
     console.log(squares[i] + ' clicked on Square # ' + i);      //Debug
 }
@@ -173,6 +182,7 @@ class Game extends React.Component {
                     <Board 
                         squares={current.squares}
                         onClick={(i) => this.handleClick(i)}
+                        squareNum={this.state.squareNum}
                     />
                 </div>
                 <div className="game-info">
