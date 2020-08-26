@@ -48,3 +48,21 @@ ul {
 .game-info {
     margin-left: 20px;
 }
+
+.reversed{
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.button {
+    background-color: #C0C0C0;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 8px;
+    cursor: pointer;
+  }
+

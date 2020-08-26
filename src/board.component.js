@@ -24,13 +24,13 @@ export default class Board extends React.Component {
     // Function used to loop and create the Board.
     buildBoard() {
         let boardRows = [];
-        let counter = 0;
+        let index = 0;
         let row = 0;
         let col = 0;
         for (row = 0; row < 3; ++row) {
             let boardColumns = [];
             for (col = 0; col < 3; ++col) {
-                boardColumns.push(this.renderSquare(counter++));
+                boardColumns.push(this.renderSquare(index++));
             }
             boardRows.push(<div className="board-row" key={row}>{boardColumns}</div>)
         }
