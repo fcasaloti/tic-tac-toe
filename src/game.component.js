@@ -1,5 +1,6 @@
 import React from 'react';
 import Board from './board.component';
+import Switch from './switch.component';
 
 ///Game class. It hosts the State component.
 export default class Game extends React.Component {
@@ -90,12 +91,13 @@ export default class Game extends React.Component {
 
         let status;
 
-        if (winner) {
+        if (winner) 
             status = 'Winner: ' + winner;
-        } else {
+        else if (this.state.currentStepNumber === 9)
+            status = 'Drawn game';
+        else 
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-        }
-
+        
         return (
             <div className="game">
                 <div className="game-board">
@@ -106,9 +108,12 @@ export default class Game extends React.Component {
                     />
                 </div>
                 <div className="game-info">
-                    <button className="button" onClick={() => this.reverseButtons()}>Reverse</button>
+                    <span>Reverse</span>
+                    <Switch className="button"
+                        handleToggle={() => this.reverseButtons()}
+                    />
                     <hr></hr>
-                    <div>{status}</div>
+                    <div className="status">{status}</div>
                     <hr></hr>
                     <ol className={this.state.isReversed ? "reversed" : ""}>{moves}</ol>
                 </div>

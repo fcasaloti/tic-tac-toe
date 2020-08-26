@@ -47,6 +47,9 @@ ul {
 
 .game-info {
     margin-left: 20px;
+    padding: 6px 12px;
+    text-align: left;
+    display: inline-block;
 }
 
 .reversed{
@@ -66,3 +69,19 @@ ul {
     cursor: pointer;
   }
 
+  .game-board {
+    margin-left:center; 
+    margin-right:center;
+  }
+
+  .status{
+      text-align: center;
+  }
+
+
+
+
+
+
+
+  
