@@ -78,7 +78,9 @@ ul {
       text-align: center;
   }
 
-
+  .line-through{
+    text-decoration: line-through;
+  }
 
 
 

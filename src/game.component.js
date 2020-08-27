@@ -2,7 +2,7 @@ import React from 'react';
 import Board from './board.component';
 import Switch from './switch.component';
 
-///Game class. It hosts the State component.
+///Game class. Parent component.
 export default class Game extends React.Component {
     constructor(props) {
         super(props);
@@ -11,11 +11,9 @@ export default class Game extends React.Component {
                 squares: Array(9).fill(null),
                 stepNumber: "",
                 location: "",
-                squareNum: "",
             }],
             currentStepNumber: 0,
             xIsNext: true,
-            squareNum: "", 
             isReversed: false,
         };
     }
@@ -34,12 +32,14 @@ export default class Game extends React.Component {
         const current = history[history.length - 1];
         const squares = current.squares.slice();
  
+        //Check whether is already won and does not allow next player click on the same square
         if (calculateWinner(squares) || squares[i]) {
             return;
         }
 
         squares[i] = this.state.xIsNext ? 'X' : 'O';
 
+        //Set State.
         this.setState({
             history: history.concat([{
                 stepNumber: history.length,
@@ -48,11 +48,11 @@ export default class Game extends React.Component {
             }]),
             currentStepNumber: history.length,
             xIsNext: !this.state.xIsNext,
-            squareNum: i,
         });
         console.log(squares[i] + ' clicked on Square # ' + i);      //Debug
     }
 
+    //Function used to "back in time".
     jumpTo(step) {
         this.setState({
             currentStepNumber: step,
@@ -60,6 +60,7 @@ export default class Game extends React.Component {
         });
     }
 
+    //Function used to reverse buttons order
     reverseButtons() {
         this.setState({
           isReversed: !this.state.isReversed,
@@ -70,11 +71,20 @@ export default class Game extends React.Component {
     render() {
         console.log('game rendered');
         const history = this.state.history; 
-
         const current = history[this.state.currentStepNumber];
-
-        const winner = calculateWinner(current.squares);
-
+        const winnerSquares = calculateWinner(current.squares);
+        let winnerPlayer = [];
+        let status;
+        //Check status of the game
+        if (winnerSquares) {
+            winnerPlayer = current.squares[winnerSquares[0]];
+            status = 'Winner: ' + winnerPlayer;
+        }
+        else if (this.state.currentStepNumber === 9)
+            status = 'Drawn game';
+        else 
+            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+        //Looping used to create "back in time" buttons
         const moves = history.map((step, move) => {
             const desc = step.stepNumber ?
                 'Go to move #' + step.stepNumber + ' in ' + step.location :
@@ -88,23 +98,14 @@ export default class Game extends React.Component {
                 </li>
             );
         });
-
-        let status;
-
-        if (winner) 
-            status = 'Winner: ' + winner;
-        else if (this.state.currentStepNumber === 9)
-            status = 'Drawn game';
-        else 
-            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
-        
+        //Rendering game
         return (
             <div className="game">
                 <div className="game-board">
                     <Board
                         squares={current.squares}
                         onClick={(i) => this.handleClick(i)}
-                        squareNum={this.state.squareNum}
+                        winnerSquares={winnerSquares}
                     />
                 </div>
                 <div className="game-info">
@@ -122,7 +123,7 @@ export default class Game extends React.Component {
     }
 }
 
-//Function created to calculate the winner of the game
+//Function used to calculate the winner of the game
 function calculateWinner(squares) {
     const lines = [
         [0, 1, 2],
@@ -137,7 +138,7 @@ function calculateWinner(squares) {
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return squares[a];
+            return lines[i];
         }
     }
     return null;

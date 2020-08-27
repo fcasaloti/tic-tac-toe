@@ -1,11 +1,13 @@
 import React from 'react';
 
-//Function that returns each button of the board
+//Function that returns each button of the board. Child Component
 function Square(props) {
-    const fontWeight = props.isSelected ? "bold" : "normal";
+    const fontWeight = props.isSelected ? "bold" : "normal";                //Set Bold to selected square
+    const setClass = props.squareWon ? "square line-through" : "square";    //Set class case game is won
+
     return (
         <button
-            className="square" style={{ fontWeight: `${fontWeight}` }}
+            className={setClass} style={{ fontWeight: `${fontWeight}` }}
             onClick={props.onClick}
         >
             {props.value}

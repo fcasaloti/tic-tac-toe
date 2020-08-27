@@ -1,22 +1,30 @@
 import React from 'react';
 import Square from './square.component';
 
-//Board Class. Host all the buttons.
+//Board Class. Child Component
 export default class Board extends React.Component {
 
-    // Call Square function and send Square Location to Game component.    
+    //Function that checks conditions and return Square Components
     renderSquare(i) {
-        //Check if the Square rendered is the one selected
+        //Check whether Square is Selected.
         let isSelected = false;
         if (i === this.props.squareNum)
             isSelected = true
 
+        //Get Squares that won the game and check against the current rendering
+        const getSquaresWon = this.props.winnerSquares !== null ? this.props.winnerSquares.slice() : "";        
+        let squareWon;
+
+        if (i === getSquaresWon[0] || i === getSquaresWon[1] || i === getSquaresWon[2])
+            squareWon = true;
+          
         return (
             <Square
                 value={this.props.squares[i]}
                 onClick={() => this.props.onClick(i)}
                 isSelected={isSelected}
                 key={i}
+                squareWon={squareWon}
             />
         )
     }
